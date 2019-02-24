@@ -10,7 +10,7 @@ double doubleRand() {
 }
 
 //Setting correct ranks
-void setRanks(scoreTable &scoreBoard,map<double,char> &rankSort){
+void setRanks(scoreTable &scoreBoard,multimap<double,char> &rankSort){
     int ct=1;
     for(auto i=rankSort.begin();i!=rankSort.end();i++){
         auto it=scoreBoard.find(make_pair(i->second,i->first));
@@ -34,7 +34,7 @@ vector<scoreTable> generateBuffer(int pCount,int matchers){
     vector<scoreTable> buffer;
 
     //Set to sort values
-    map<double,char> rankSort;
+    multimap<double,char> rankSort;
 
     char c='A';
     while(matchers--){
@@ -66,7 +66,7 @@ void printBuffer(vector<scoreTable> &buffer){
     for(i=buffer.begin();i!=buffer.end();i++){
 
         cout<<"\n Score Board for Matcher : "<<matcher++<<endl;
-        cout<<" Name of the Person"<<setw(12)<<"Score"<<setw(12)<<"Rank"<<endl;
+        cout<<"\n Name of the Person"<<setw(12)<<"Score"<<setw(12)<<"Rank\n"<<endl;
 
         for(auto scoreBoard=(*i).begin();scoreBoard!=(*i).end();scoreBoard++){
             auto personScore=scoreBoard->first;
@@ -79,7 +79,7 @@ void printBuffer(vector<scoreTable> &buffer){
 //Highest rank function
 fusedTable highestRank(vector<scoreTable> &buffer,int pCount,int matcher){
     fusedTable fused;
-    map <double,char> fuseSort;
+    multimap <double,char> fuseSort;
     double score=INT_MAX;
     int Rank=INT_MAX;
     for(auto i=0;i<pCount;i++){
@@ -111,10 +111,9 @@ fusedTable highestRank(vector<scoreTable> &buffer,int pCount,int matcher){
 }
 
 //Borda Count method
-//Highest rank function
 fusedTable bordaCountRank(vector<scoreTable> &buffer,int pCount,int matcher){
     fusedTable fused;
-    map <double,char> fuseSort;
+    multimap <double,char> fuseSort;
     double score=0;
     int Rank=0;
     for(auto i=0;i<pCount;i++){
@@ -145,11 +144,45 @@ fusedTable bordaCountRank(vector<scoreTable> &buffer,int pCount,int matcher){
     return fused;
 }
 
+//Weighted Borda Count method
+fusedTable weightedBordaRank(vector<scoreTable> &buffer,int pCount,int matcher,vector<double> bordaWeights){
+    fusedTable fused;
+    multimap <double,char> fuseSort;
+    double score=0;
+    double Rank=0;
+    for(auto i=0;i<pCount;i++){
+        pair<char,double> pr;
+            for(auto j=0;j<matcher;j++){
+                auto mp=next(buffer[j].begin(),i);
+                pr=mp->first;
+                score+=pr.second*bordaWeights[j];
+                Rank+=((double)mp->second)*bordaWeights[j]+0.1;
+            }
+        fuseSort.insert(make_pair(score,pr.first));
+        fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+        score=0;
+        Rank=0;
+    }
+
+    int ct=1;
+    for(auto it=fuseSort.begin();it!=fuseSort.end();it++){
+        auto select=fused.find(make_pair(it->second,it->first));
+        if(select!=fused.end()){
+            auto pr1=select->first;
+            double Rank=select->second.first;
+            fused.erase(select);
+            fused.insert(make_pair(pr1,make_pair(Rank,ct++)));
+        }
+
+    }
+    return fused;
+}
+
 //Function to print fused table
 void printFused(string name,fusedTable &rankTable){
 
     cout<<name<<" Fused Table"<<endl;
-    cout<<" Name of the Person"<<setw(12)<<"Score"<<setw(22)<<"Fused Rank"<<setw(22)<<"Combined Rank"<<endl;
+    cout<<"\n Name of the Person"<<setw(12)<<"Score"<<setw(22)<<"Fused Rank"<<setw(22)<<"Combined Rank \n"<<endl;
 
     for(auto i=rankTable.begin();i!=rankTable.end();i++){
         auto pr1=i->first;
@@ -167,15 +200,26 @@ int main(void){
     auto buffer=generateBuffer(pCount,matcher);
     printBuffer(buffer);
 
+    //creating random weights;
+    vector<double> bordaWeights;
+    for(auto i=0;i<matcher;i++){
+        bordaWeights.push_back(doubleRand()/10);
+    }
+
     //Highest ranking
     cout<<"-------------------------------------------------------"<<endl;
     fusedTable highestrank=highestRank(buffer,pCount,matcher);
     printFused(" Highest Rank",highestrank);
 
-    //Highest ranking
+    //Borda ranking
     cout<<"-------------------------------------------------------"<<endl;
     fusedTable bordacountrank=bordaCountRank(buffer,pCount,matcher);
     printFused(" Borda Count Rank",bordacountrank);
+
+    //Weighted Borda ranking
+    cout<<"-------------------------------------------------------"<<endl;
+    fusedTable weightedbordarank=weightedBordaRank(buffer,pCount,matcher,bordaWeights);
+    printFused(" Wighted Borda Count Rank",weightedbordarank);
 
 return 0;
 }
