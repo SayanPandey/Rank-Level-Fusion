@@ -3,6 +3,7 @@
 using namespace std;
 typedef map<pair<char,double>,int> scoreTable;
 typedef map<pair<char,double>,pair<int,int>> fusedTable;
+typedef map<pair<char,double>,pair<double,int>> fusedTableFloat;
 
 //Random float generation
 double doubleRand() {
@@ -79,26 +80,29 @@ void printBuffer(vector<scoreTable> &buffer){
 //Highest rank function
 fusedTable highestRank(vector<scoreTable> &buffer,int pCount,int matcher){
     fusedTable fused;
-    multimap <double,char> fuseSort;
+    multimap <int,fusedTable::iterator> fuseSort;
     double score=INT_MAX;
     int Rank=INT_MAX;
     for(auto i=0;i<pCount;i++){
         pair<char,double> pr;
+        scoreTable::iterator mp;
             for(auto j=0;j<matcher;j++){
-                auto mp=next(buffer[j].begin(),i);
+                mp=next(buffer[j].begin(),i);
                 pr=mp->first;
                 if(pr.second<score) score=pr.second;
                 if(mp->second<Rank) Rank=mp->second;
             }
-        fuseSort.insert(make_pair(score,pr.first));
-        fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+
+        //Return type is a Pair<iterator,boolean(true if inserted)>.
+        auto fusedIterator=fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+        fuseSort.insert(make_pair(Rank,fusedIterator.first));
         score=INT_MAX;
         Rank=INT_MAX;
     }
 
     int ct=1;
     for(auto it=fuseSort.begin();it!=fuseSort.end();it++){
-        auto select=fused.find(make_pair(it->second,it->first));
+        auto select=it->second;
         if(select!=fused.end()){
             auto pr1=select->first;
             int Rank=select->second.first;
@@ -113,26 +117,29 @@ fusedTable highestRank(vector<scoreTable> &buffer,int pCount,int matcher){
 //Borda Count method
 fusedTable bordaCountRank(vector<scoreTable> &buffer,int pCount,int matcher){
     fusedTable fused;
-    multimap <double,char> fuseSort;
+    multimap <int,fusedTable::iterator> fuseSort;
     double score=0;
     int Rank=0;
     for(auto i=0;i<pCount;i++){
         pair<char,double> pr;
+        scoreTable::iterator mp;
             for(auto j=0;j<matcher;j++){
-                auto mp=next(buffer[j].begin(),i);
+                mp=next(buffer[j].begin(),i);
                 pr=mp->first;
                 score+=pr.second;
                 Rank+=mp->second;
             }
-        fuseSort.insert(make_pair(score,pr.first));
-        fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+
+        //Return type is a Pair<iterator,boolean(true if inserted)>.
+        auto fusedIterator=fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+        fuseSort.insert(make_pair(Rank,fusedIterator.first));
         score=0;
         Rank=0;
     }
 
     int ct=1;
     for(auto it=fuseSort.begin();it!=fuseSort.end();it++){
-        auto select=fused.find(make_pair(it->second,it->first));
+        auto select=it->second;
         if(select!=fused.end()){
             auto pr1=select->first;
             int Rank=select->second.first;
@@ -145,28 +152,31 @@ fusedTable bordaCountRank(vector<scoreTable> &buffer,int pCount,int matcher){
 }
 
 //Weighted Borda Count method
-fusedTable weightedBordaRank(vector<scoreTable> &buffer,int pCount,int matcher,vector<double> bordaWeights){
-    fusedTable fused;
-    multimap <double,char> fuseSort;
+fusedTableFloat weightedBordaRank(vector<scoreTable> &buffer,int pCount,int matcher,vector<double> bordaWeights){
+    fusedTableFloat fused;
+    multimap <int,fusedTableFloat::iterator> fuseSort;
     double score=0;
     double Rank=0;
     for(auto i=0;i<pCount;i++){
         pair<char,double> pr;
+        scoreTable::iterator mp;
             for(auto j=0;j<matcher;j++){
-                auto mp=next(buffer[j].begin(),i);
+                mp=next(buffer[j].begin(),i);
                 pr=mp->first;
                 score+=pr.second*bordaWeights[j];
-                Rank+=((double)mp->second)*bordaWeights[j]+0.1;
+                Rank+=mp->second*bordaWeights[j];
             }
-        fuseSort.insert(make_pair(score,pr.first));
-        fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+
+        //Return type is a Pair<iterator,boolean(true if inserted)>.
+        auto fusedIterator=fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+        fuseSort.insert(make_pair(Rank,fusedIterator.first));
         score=0;
         Rank=0;
     }
 
     int ct=1;
     for(auto it=fuseSort.begin();it!=fuseSort.end();it++){
-        auto select=fused.find(make_pair(it->second,it->first));
+        auto select=it->second;
         if(select!=fused.end()){
             auto pr1=select->first;
             double Rank=select->second.first;
@@ -192,6 +202,53 @@ void printFused(string name,fusedTable &rankTable){
 
 }
 
+//Function to print fused table
+void printFusedFloat(string name,fusedTableFloat &rankTable){
+
+    cout<<name<<" Fused Table"<<endl;
+    cout<<"\n Name of the Person"<<setw(12)<<"Score"<<setw(22)<<"Fused Rank"<<setw(22)<<"Combined Rank \n"<<endl;
+
+    for(auto i=rankTable.begin();i!=rankTable.end();i++){
+        auto pr1=i->first;
+        auto pr2=i->second;
+        cout<<" "<<pr1.first<<setw(30)<<pr1.second<<setw(18)<<pr2.first<<setw(20)<<pr2.second<<endl;
+    }
+
+}
+
+fusedTableFloat bayesFuseRank(int pCount,int matcher,vector<vector<int>>genuineProb,vector<vector<int>>imposterProb){
+fusedTableFloat fused;
+    multimap <int,fusedTableFloat::iterator> fuseSort;
+    double score=0;
+    double Rank=0;
+    for(auto i=0;i<pCount;i++){
+        pair<char,double> pr;
+        scoreTable::iterator mp;
+            for(auto j=0;j<matcher;j++){
+                mp=next(buffer[j].begin(),i);
+                pr=mp->first;
+            }
+
+        //Return type is a Pair<iterator,boolean(true if inserted)>.
+        auto fusedIterator=fused.insert(make_pair(make_pair(pr.first,score),make_pair(Rank,-1)));
+        fuseSort.insert(make_pair(Rank,fusedIterator.first));
+        //score=0;
+        //Rank=0;
+    }
+
+    int ct=1;
+    for(auto it=fuseSort.begin();it!=fuseSort.end();it++){
+        auto select=it->second;
+        if(select!=fused.end()){
+            auto pr1=select->first;
+            double Rank=select->second.first;
+            fused.erase(select);
+            fused.insert(make_pair(pr1,make_pair(Rank,ct++)));
+        }
+
+    }
+    return fused;
+}
 int main(void){
 
     int pCount=20,matcher=6;
@@ -206,6 +263,20 @@ int main(void){
         bordaWeights.push_back(doubleRand()/10);
     }
 
+    vector<vector<double>> genuineProb,imposterProb;
+    //Genuine probabilities
+    for(auto i=0;i<matcher;i++){
+        for(auto j=0;j<pCount;j++){
+            genuineProb[i][j]=doubleRand()/10;
+        }
+    }
+    //Imposter Probabilities
+    for(auto i=0;i<matcher;i++){
+        for(auto j=0;j<pCount;j++){
+            genuineProb[i][j]=doubleRand()/10;
+        }
+    }
+
     //Highest ranking
     cout<<"-------------------------------------------------------"<<endl;
     fusedTable highestrank=highestRank(buffer,pCount,matcher);
@@ -218,8 +289,13 @@ int main(void){
 
     //Weighted Borda ranking
     cout<<"-------------------------------------------------------"<<endl;
-    fusedTable weightedbordarank=weightedBordaRank(buffer,pCount,matcher,bordaWeights);
-    printFused(" Wighted Borda Count Rank",weightedbordarank);
+    fusedTableFloat weightedbordarank=weightedBordaRank(buffer,pCount,matcher,bordaWeights);
+    printFusedFloat(" Wighted Borda Count Rank",weightedbordarank);
+
+    //Bayes Fuse ranking
+    cout<<"-------------------------------------------------------"<<endl;
+    fusedTableFloat bayesfuserank=bayesFuseRank(pCount,matcher,genuineProb,imposterProb);
+    printFusedFloat(" Bayes Fuse Count Rank",bayesfuserank);
 
 return 0;
 }
