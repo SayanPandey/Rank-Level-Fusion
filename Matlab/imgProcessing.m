@@ -1,50 +1,59 @@
 %Stucture to store Names and their Scores
-scoreBoard=struct;
 
-
-
-
-
-
+%Main Directory of images
 A= dir('..\Assets\SortedImages');
- 
 sizeA=size(A);
 
-for i=3:size(A)
+%Looping through each image
+for i=3:4%size(A)
     
     %Reading each directory 
     message=strcat('Present Working Subject :',A(i).name);
     disp(message);
     imgDir=dir(strcat('..\Assets\SortedImages\',A(i).name));
     
-    %Getting test image
+    %Getting Train image
     if i>=3
-        testImg = imread(strcat('..\Assets\SortedImages\',A(i).name,'\',imgDir(3).name));
-        imshow(testImg);
-        I = single(testImg) ;
-    
-    %Getting images
-    finalScore=0;
-    double(finalScore);
-        for j=4:size(imgDir)
+        trainImg = imread(strcat('..\Assets\SortedImages\',A(i).name,'\',imgDir(3).name));
+        imshow(trainImg);
+        
+    %Getting Test images
+        for j=3:size(A)
+            if j~=i
+                imgDir=dir(strcat('..\Assets\SortedImages\',A(j).name));        
             
-            %Getting images for score generation.
-            J=imread(strcat('..\Assets\SortedImages\',A(i).name,'\',imgDir(j).name));
-            J = single(J) ;
-            
-            %sift based matching
-            [fa, da] = vl_sift(I) ;
-            [fb, db] = vl_sift(J) ;
-            [matches, scores] = vl_ubcmatch(da, db) ;
-            finalScore=finalScore+sum(scores,'double');
-            disp(sum(scores,'double'));
-            %imgDir(j).name
+                %Now here we Calculate Scores:
+                
+                %Sift Score
+                scoreSift=0.00;
+                for k=3:size(imgDir)
+                    
+                    %Getting set of images from a particular directory.
+                    testImg=imread(strcat('..\Assets\SortedImages\',A(j).name,'\',imgDir(k).name));
+                    temp=SIFT(trainImg,testImg);
+                    
+                    if temp>0
+                        scoreSift=temp;
+                        break;
+                    end
+                
+                end
+                a=sprintf('%.6f',scoreSift);
+                disp(strcat('Sift Score with subject: ',A(j).name,' is :',a));
+                
+                
+                %Corelation Score
+                corScore=corelation(trainImg,testImg);
+                a=sprintf('%.6f',corScore);
+                disp(strcat('Corelation Score with subject: ',A(j).name,' is :',a));
+                
+                
+                
+            end
         end
-        finalScore=finalScore./(size(imgDir)-4);
-        disp(strcat('Score for the subject :',' '));
-        disp(finalScore);
+        
     end
-end     
+end
 
 
 
