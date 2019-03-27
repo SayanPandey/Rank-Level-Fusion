@@ -4,13 +4,21 @@
 A= dir('..\Assets\SortedImages');
 sizeA=size(A);
 
+%Creating a Directory to store Scores:
+mkdir ..\ScoreBoard;
+
+
+
 %Looping through each image
-for i=3:4%size(A)
+for i=3:size(A)
     
     %Reading each directory 
     message=strcat('Present Working Subject :',A(i).name);
     disp(message);
     imgDir=dir(strcat('..\Assets\SortedImages\',A(i).name));
+    
+    %Makaing folder of a particular name 
+    mkdir(['..\ScoreBoard\',A(i).name]);
     
     %Getting Train image
     if i>=3
@@ -47,6 +55,18 @@ for i=3:4%size(A)
                 a=sprintf('%.6f',corScore);
                 disp(strcat('Corelation Score with subject: ',A(j).name,' is :',a));
                 
+                
+                %EMD Score
+                train=histImage(trainImg);
+                test=histImage(testImg);
+                dist=patDistMAp(train,test);
+                [m,n]=size(dist);
+                emdScore=double(sum(dist)/(m*n));
+                a=sprintf('%.6f',emdScore);
+                disp(strcat('EMD Score with subject: ',A(j).name,' is :',a));
+                
+                
+                %Storage;
                 
                 
             end

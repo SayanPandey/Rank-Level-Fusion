@@ -11,7 +11,7 @@ for i = 1:1: y     % runing on rows
     for j = 1:1: x % running on colomns
         % gray level is addtess to cell in output histogram array
         % we add there 1 (bacause of current pixel (y,x) has this gray level
-        h(img(i,j)) = h(img(i,j)) + 1;
+            h(img(i,j)+1) = h(img(i,j)+1) + 1;
         % pay attention to fact, that we use here pixel value as index!
     end
 end
