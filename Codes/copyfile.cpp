@@ -33,6 +33,7 @@ int main(void){
     pair<map <string,vector<string>> ::iterator,bool> save;
     vector<string> ctk;
 
+    //Place source folder and destination folder "WITH FORWARD SLASH / "
     string source="C:/Users/Sayan/Desktop/Final Project/Assets/LFWCROP/faces";
     string destination="C:/Users/Sayan/Desktop/Final Project/Assets/SortedImages/";
     char src[10000];

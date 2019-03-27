@@ -1,0 +1,20 @@
+x = imread('C:\Users\Sayan\Desktop\myPhoto.jpeg');
+y = imread('C:\Users\Sayan\Desktop\abc.pgm');
+I = single(rgb2gray(x)) ;
+J = single(y) ;
+image(I) ;
+image(y)
+[f,d] = vl_sift(I) ;
+perm = randperm(size(f,2)) ;
+sel = perm(1:2001) ;
+h1 = vl_plotframe(f(:,sel)) ;
+h2 = vl_plotframe(f(:,sel)) ;
+set(h1,'color','k','linewidth',3) ;
+set(h2,'color','y','linewidth',2) ;
+h3 = vl_plotsiftdescriptor(d(:,sel),f(:,sel)) ;
+set(h3,'color','g') ;
+Ib=J;
+[fa, da] = vl_sift(I) ;
+[fb, db] = vl_sift(Ib) ;
+[matches, scores] = vl_ubcmatch(da, db) ;
+scores;
