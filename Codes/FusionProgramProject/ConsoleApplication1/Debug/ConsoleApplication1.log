@@ -1,0 +1,98 @@
+﻿  ConsoleApplication1.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\utility(239): warning C4244: 'initializing': conversion from '_Ty' to '_Ty1', possible loss of data
+          with
+          [
+              _Ty=double
+          ]
+          and
+          [
+              _Ty1=int
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xmemory0(879): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>,0>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>> &&) noexcept' being compiled
+          with
+          [
+              _Kty=int,
+              _Ty=std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xmemory0(881): note: see reference to function template instantiation 'std::pair<const _Kty,_Ty>::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>,0>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>> &&) noexcept' being compiled
+          with
+          [
+              _Kty=int,
+              _Ty=std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xtree(976): note: see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>>(_Alloc &,_Objty *const ,std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Alloc=std::allocator<std::_Tree_node<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,std::_Default_allocator_traits<std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>>::void_pointer>>,
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=std::pair<char,double>,
+              _Objty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xtree(983): note: see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>>(_Alloc &,_Objty *const ,std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Alloc=std::allocator<std::_Tree_node<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,std::_Default_allocator_traits<std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>>::void_pointer>>,
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=std::pair<char,double>,
+              _Objty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xtree(1154): note: see reference to function template instantiation 'std::_Tree_node<_Ty,std::_Default_allocator_traits<_Alloc>::void_pointer> *std::_Tree_comp_alloc<_Traits>::_Buynode<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Alloc=std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>,
+              _Traits=std::_Tmap_traits<int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>,std::less<int>,std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>,true>,
+              _Kty=std::pair<char,double>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xtree(1155): note: see reference to function template instantiation 'std::_Tree_node<_Ty,std::_Default_allocator_traits<_Alloc>::void_pointer> *std::_Tree_comp_alloc<_Traits>::_Buynode<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Alloc=std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>,
+              _Traits=std::_Tmap_traits<int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>,std::less<int>,std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>,true>,
+              _Kty=std::pair<char,double>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\map(559): note: see reference to function template instantiation 'std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>,_Pr,_Alloc,true>>::emplace<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=int,
+              _Pr=std::less<int>,
+              _Alloc=std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\map(560): note: see reference to function template instantiation 'std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>,_Pr,_Alloc,true>>::emplace<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=int,
+              _Pr=std::less<int>,
+              _Alloc=std::allocator<std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\map(574): note: see reference to function template instantiation 'std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>> std::multimap<int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>,std::less<int>,std::allocator<_Ty>>::emplace<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=std::pair<char,double>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\map(574): note: see reference to function template instantiation 'std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>> std::multimap<int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>,std::less<int>,std::allocator<_Ty>>::emplace<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>>(std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>> &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=std::pair<char,double>
+          ]
+  c:\users\sayan\desktop\final project\codes\fusionprogramproject\consoleapplication1\fusionalgo.h(178): note: see reference to function template instantiation 'std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>> std::multimap<int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>,std::less<int>,std::allocator<_Ty>>::insert<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>,void>(_Valty &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=std::pair<char,double>,
+              _Valty=std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>
+          ]
+  c:\users\sayan\desktop\final project\codes\fusionprogramproject\consoleapplication1\fusionalgo.h(178): note: see reference to function template instantiation 'std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>> std::multimap<int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>,std::less<int>,std::allocator<_Ty>>::insert<std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,std::pair<double,int>>>>>>,void>(_Valty &&)' being compiled
+          with
+          [
+              _Ty=std::pair<const int,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>,
+              _Kty=std::pair<char,double>,
+              _Valty=std::pair<double,std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<char,double>,std::pair<double,int>>>>>>
+          ]
+c:\users\sayan\desktop\final project\codes\fusionprogramproject\consoleapplication1\consoleapplication1.cpp(49): warning C4172: returning address of local variable or temporary: dest
+  ConsoleApplication1.vcxproj -> C:\Users\Sayan\Desktop\Final Project\Codes\FusionProgramProject\Debug\ConsoleApplication1.exe
