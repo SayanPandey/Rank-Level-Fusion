@@ -66,19 +66,20 @@ vector<scoreTable> generateBuffer(int pCount, int matchers) {
 }
 
 //Print Buffer
-void printBuffer(vector<scoreTable> &buffer) {
+template <class T>
+void printBuffer(T &buffer) {
 	int matcher = 1;
 	//Loop for every matcher.
-	vector<scoreTable>::iterator i;
-	for (i = buffer.begin(); i != buffer.end(); i++) {
+	//vector<scoreTable>::iterator i;
+	for (auto i = buffer.begin(); i != buffer.end(); i++) {
 
 		cout << "\n Score Board for Matcher : " << matcher++ << endl;
-		cout << "\n Name of the Person" << setw(12) << "Score" << setw(12) << "Rank\n" << endl;
+		cout << "\n Name of the Person" << setw(30) << "Score" << setw(30) << "Rank\n" << endl;
 
 		for (auto scoreBoard = (*i).begin(); scoreBoard != (*i).end(); scoreBoard++) {
 			auto personScore = scoreBoard->first;
 			auto Rank = scoreBoard->second;
-			cout << " " << personScore.first << setw(30) << personScore.second << setw(10) << Rank << endl;
+			cout << " " << personScore.first << setw(40) << personScore.second << setw(20) << Rank << endl;
 		}
 	}
 }
@@ -206,7 +207,7 @@ scoreTable bayesFuseRank(int pCount, int matcher, vector<vector<double>>genuineP
 			Rank += log(genuineProb[j][i] / imposterProb[j][i]);
 		}
 		auto select = bayesfuserank.insert(make_pair(make_pair(c++, Rank), 0));
-		bayesSort.insert(make_pair(abs(Rank), select.first));
+		bayesSort.insert(make_pair(Rank, select.first));
 	}
 	int ct = 1;
 	for (auto i = bayesSort.begin(); i != bayesSort.end(); i++) {
