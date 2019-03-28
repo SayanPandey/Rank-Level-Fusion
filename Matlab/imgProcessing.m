@@ -1,11 +1,17 @@
-%Stucture to store Names and their Scores
 
 %Main Directory of images
 A= dir('..\Assets\SortedImages');
 sizeA=size(A);
 
+%Stucture to store Names and their Scores
+names=cell(sizeA);
+scores1=cell(sizeA);
+scores2=cell(sizeA);
+scores3=cell(sizeA);
+
+
 %Creating a Directory to store Scores:
-mkdir ..\ScoreBoard;
+[status, msg, msgID] = mkdir ('..\ScoreBoard');
 
 
 
@@ -18,18 +24,22 @@ for i=3:size(A)
     imgDir=dir(strcat('..\Assets\SortedImages\',A(i).name));
     
     %Makaing folder of a particular name 
-    mkdir(['..\ScoreBoard\',A(i).name]);
+    %[status, msg, msgID] = mkdir(['..\ScoreBoard\',A(i).name]);
+    
     
     %Getting Train image
     if i>=3
         trainImg = imread(strcat('..\Assets\SortedImages\',A(i).name,'\',imgDir(3).name));
         imshow(trainImg);
+    
         
     %Getting Test images
         for j=3:size(A)
-            if j~=i
-                imgDir=dir(strcat('..\Assets\SortedImages\',A(j).name));        
-            
+            if j~=i       
+                
+                %Getting test image directory
+                imgDir=dir(strcat('..\Assets\SortedImages\',A(j).name));
+                
                 %Now here we Calculate Scores:
                 
                 %Sift Score
@@ -52,8 +62,8 @@ for i=3:size(A)
                 
                 %Corelation Score
                 corScore=corelation(trainImg,testImg);
-                a=sprintf('%.6f',corScore);
-                disp(strcat('Corelation Score with subject: ',A(j).name,' is :',a));
+                b=sprintf('%.6f',corScore);
+                disp(strcat('Corelation Score with subject: ',A(j).name,' is :',b));
                 
                 
                 %EMD Score
@@ -62,15 +72,30 @@ for i=3:size(A)
                 dist=patDistMAp(train,test);
                 [m,n]=size(dist);
                 emdScore=double(sum(dist)/(m*n));
-                a=sprintf('%.6f',emdScore);
-                disp(strcat('EMD Score with subject: ',A(j).name,' is :',a));
+                c=sprintf('%.6f',emdScore);
+                disp(strcat('EMD Score with subject: ',A(j).name,' is :',c));
                 
                 
                 %Storage;
-                
+                names{j}=A(j).name;
+                scores1{j}=a;
+                scores2{j}=b;
+                scores3{j}=c;
                 
             end
         end
+        
+        %Creating CSV FILE TO STORE;
+        setdir=strcat('..\ScoreBoard\',A(i).name,'.csv');
+        fid = fopen( setdir, 'w' );
+        fprintf( fid, '%s,%s,%s,%s\n','Names','SIFT Scores','Coreleation Scores','EMD Scores');
+        
+        for jj = 1 : length( names )
+            if jj~=i
+                fprintf( fid, '%s,%s,%s,%s\n', names{jj}, scores1{jj},scores2{jj},scores3{jj});
+            end
+        end
+        fclose( fid );    
         
     end
 end
