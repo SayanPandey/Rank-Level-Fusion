@@ -1,5 +1,5 @@
 ﻿  ConsoleApplication1.cpp
-c:\users\sayan\desktop\final project\codes\fusionprogramproject\consoleapplication1\consoleapplication1.cpp(102): warning C4244: 'initializing': conversion from 'const _Ty2' to 'int', possible loss of data
+c:\users\sayan\desktop\final project\codes\fusionprogramproject\consoleapplication1\consoleapplication1.cpp(137): warning C4244: 'initializing': conversion from 'const _Ty2' to 'int', possible loss of data
           with
           [
               _Ty2=double

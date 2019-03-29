@@ -93,13 +93,63 @@ vector<vector<string>> readCSV(string path) {
 	return parse;
 }
 
+//Write into CSV File
+void write(string destination,scoreTable2 scoretable,string head){
+	ofstream file;
+	file.open(changeToChar(destination+"/"+head+".csv"));
+	file << "Name,Scores," << head << endl;
+	file << ",,," << endl; file << ",,," << endl;
+
+	//Placing the ranks
+	for (auto i = scoretable.begin(); i != scoretable.end(); i++) {
+		file << i->first.first << "," << i->first.second << "," << i->second << endl;
+	}
+}
+
+//Borda Count Method
+scoreTable2 getBordaCountRank(vector<scoreTable2> &buffer, int pCount, int matcher) {
+	scoreTable2 fused;
+	multimap <int, scoreTable2::iterator> fuseSort;
+	double score = 0;
+	int Ranksum = 0;
+	for (auto i = 0; i < pCount; i++) {
+		pair<string, double> pr;
+		scoreTable2::iterator mp;
+		for (auto j = 0; j < matcher; j++) {
+			mp = next(buffer[j].begin(), i);
+			pr = mp->first;
+			score += pr.second;
+			Ranksum += mp->second;
+		}
+
+		//Return type is a Pair<iterator,boolean(true if inserted)>.
+		auto fusedIterator = fused.insert(make_pair(make_pair(pr.first, Ranksum),-1));
+		fuseSort.insert(make_pair(Ranksum, fusedIterator.first));
+		score = 0;
+		Ranksum = 0;
+	}
+
+	int ct = 1;
+	for (auto it = fuseSort.begin(); it != fuseSort.end(); it++) {
+		auto select = it->second;
+		if (select != fused.end()) {
+			string name = select->first.first;
+			int Ranksum = select->first.second;
+			fused.erase(select);
+			fused.insert(make_pair(make_pair(name,Ranksum), ct++));
+		}
+
+	}
+	return fused;
+}
+
 void putRanks(scoreTable2 &fused, multimap<double, scoreTable2::iterator> &fuseSort) {
 	int ct = 1;
 	for (auto it = fuseSort.begin(); it != fuseSort.end(); it++) {
 		auto select = it->second;
 		if (select != fused.end()) {
 			auto name = select->first.first;
-			int score = select->first.second;
+			double score = select->first.second;
 			fused.erase(select);
 			fused.insert(make_pair(make_pair(name,score),ct++));
 		}
@@ -191,6 +241,7 @@ int main(void) {
 	//Iterating through each CSV FIle
 	for (auto i = csvList.begin(); i != csvList.end(); i++) {
 
+		cout << "Please Wait" << endl;
 		string fileName = *i;
 
 		//Creating Directory names
@@ -202,10 +253,17 @@ int main(void) {
 		//Reading CSV file
 		parse=readCSV(source + fileName);
 		auto scoreBuffer=setTable(parse);
-		printBuffer(scoreBuffer);
-		
+		//printBuffer(scoreBuffer);
+		scoreTable2 fused=getBordaCountRank(scoreBuffer, 1679, 3);
 
-		break;
+		
+		write(directory,*(scoreBuffer.begin()),"Sift Ranks");
+		write(directory, *(scoreBuffer.begin()+1), "Corelation Ranks");
+		write(directory, *(scoreBuffer.begin()+2), "EMD Ranks");
+
+		//Writing the fused
+		write(directory,fused, "Fused Ranks");
+		cout << "Fused Rank generation for " << fileName << " done" << endl;
 
 	}
 	
