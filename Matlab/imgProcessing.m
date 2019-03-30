@@ -9,6 +9,10 @@ scores1=cell(sizeA);
 scores2=cell(sizeA);
 scores3=cell(sizeA);
 
+%Set for storing times
+names2=cell(sizeA);
+times=cell(sizeA);
+
 
 %Creating a Directory to store Scores:
 [status, msg, msgID] = mkdir ('..\ScoreBoard');
@@ -17,6 +21,10 @@ scores3=cell(sizeA);
 
 %Looping through each image
 for i=3:size(A)
+    
+    %To calculate Ecectution time:
+    tic;
+   
     
     %Reading each directory 
     message=strcat('Present Working Subject :',A(i).name);
@@ -30,7 +38,7 @@ for i=3:size(A)
     %Getting Train image
     if i>=3
         trainImg = imread(strcat('..\Assets\SortedImages\',A(i).name,'\',imgDir(3).name));
-        imshow(trainImg);
+        %imshow(trainImg);
     
         
     %Getting Test images
@@ -84,20 +92,21 @@ for i=3:size(A)
                 
             end
         end
-        
         %Creating CSV FILE TO STORE;
-        setdir=strcat('..\ScoreBoard\',A(i).name,'.csv');
-        fid = fopen( setdir, 'w' );
-        fprintf( fid, '%s,%s,%s,%s\n','Names','SIFT Scores','Coreleation Scores','EMD Scores');
-        
-        for jj = 1 : length( names )
-            if jj~=i
-                fprintf( fid, '%s,%s,%s,%s\n', names{jj}, scores1{jj},scores2{jj},scores3{jj});
-            end
-        end
-        fclose( fid );    
+        storeScores(A(i).name,names,scores1,scores2,scores3);
         
     end
+    
+    %Storing the time with names.
+    timeElapsed=toc;
+    disp(timeElapsed);
+    
+    names2{i}=A(i).name;
+    times{i}=timeElapsed;
+    
+    %Storing it in a csv file
+    timeStore(names2,times);
+    
 end
 
 

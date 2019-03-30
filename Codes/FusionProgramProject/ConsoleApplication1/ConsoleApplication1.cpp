@@ -143,6 +143,44 @@ scoreTable2 getBordaCountRank(vector<scoreTable2> &buffer, int pCount, int match
 	return fused;
 }
 
+//Highest rank function
+scoreTable2 highestRank(vector<scoreTable2> &buffer, int pCount, int matcher) {
+	scoreTable2 fused;
+	multimap <int, scoreTable2::iterator> fuseSort;
+	double score = INT_MAX;
+	int Rank = INT_MAX;
+	for (auto i = 0; i < pCount; i++) {
+		pair<string, double> pr;
+		scoreTable2::iterator mp;
+		for (auto j = 0; j < matcher; j++) {
+			mp = next(buffer[j].begin(), i);
+			pr = mp->first;
+			if (pr.second < score) score = pr.second;
+			if (mp->second < Rank) Rank = mp->second;
+		}
+
+		//Return type is a Pair<iterator,boolean(true if inserted)>.
+		auto fusedIterator = fused.insert(make_pair(make_pair(pr.first, score), make_pair(Rank, -1)));
+		fuseSort.insert(make_pair(Rank, fusedIterator.first));
+		score = INT_MAX;
+		Rank = INT_MAX;
+	}
+
+	int ct = 1;
+	for (auto it = fuseSort.begin(); it != fuseSort.end(); it++) {
+		auto select = it->second;
+		if (select != fused.end()) {
+			auto pr1 = select->first;
+			int Rank = select->second.first;
+			fused.erase(select);
+			fused.insert(make_pair(pr1, make_pair(Rank, ct++)));
+		}
+
+	}
+	return fused;
+}
+
+//Put Ranks
 void putRanks(scoreTable2 &fused, multimap<double, scoreTable2::iterator> &fuseSort) {
 	int ct = 1;
 	for (auto it = fuseSort.begin(); it != fuseSort.end(); it++) {

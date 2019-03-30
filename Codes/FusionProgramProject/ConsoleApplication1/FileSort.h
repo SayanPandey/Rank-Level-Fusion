@@ -44,9 +44,9 @@ int sortImages(void) {
 	vector<string> ctk;
 
 	//Place source folder and destination folder "WITH FORWARD SLASH / "
-	string source = "C:/Users/Sayan/Desktop/Final Project/Assets/LFWCROP/faces";
-	_mkdir("C:/Users/Sayan/Desktop/Final Project/Assets/SortedImages");
-	string destination = "C:/Users/Sayan/Desktop/Final Project/Assets/SortedImages/";
+	string source = "./../../Assets/LFWCROP/faces";
+	_mkdir("./../../Assets/SortedImages");
+	string destination = "./../../Assets/SortedImages/";
 	char src[10000];
 	strncpy_s(src, source.c_str(), sizeof(src));
 
