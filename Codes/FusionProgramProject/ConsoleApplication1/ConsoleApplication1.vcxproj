@@ -154,6 +154,7 @@
     <ClInclude Include="FusionAlgo.h" />
     <ClInclude Include="FileSort.h" />
     <ClInclude Include="dirent.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

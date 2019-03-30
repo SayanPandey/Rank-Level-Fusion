@@ -7,10 +7,14 @@
 #include<iomanip>
 #include<string>
 #include <sstream>
+#include <time.h>
+#include<fstream>
+
 
 #include "FusionAlgo.h"
 #include "FileSort.h"
 #include "dirent.h"
+#include "Time.h"
 
 //Below is a datatype to store score values.
 typedef map<pair<string, double>, int> scoreTable2;
@@ -94,11 +98,11 @@ vector<vector<string>> readCSV(string path) {
 }
 
 //Write into CSV File
-void write(string destination,scoreTable2 scoretable,string head){
+void write(string destination,scoreTable2 scoretable,string title,string head){
 	ofstream file;
-	file.open(changeToChar(destination+"/"+head+".csv"));
-	file << "Name,Scores," << head << endl;
-	file << ",,," << endl; file << ",,," << endl;
+	file.open(changeToChar(destination+"/"+title+".csv"));
+	file << "Name,"<<title<<","<< head << endl;
+	file << ",," << endl; file << ",," << endl;
 
 	//Placing the ranks
 	for (auto i = scoretable.begin(); i != scoretable.end(); i++) {
@@ -144,10 +148,10 @@ scoreTable2 getBordaCountRank(vector<scoreTable2> &buffer, int pCount, int match
 }
 
 //Highest rank function
-scoreTable2 highestRank(vector<scoreTable2> &buffer, int pCount, int matcher) {
+scoreTable2 getHighestRank(vector<scoreTable2> &buffer, int pCount, int matcher) {
 	scoreTable2 fused;
 	multimap <int, scoreTable2::iterator> fuseSort;
-	double score = INT_MAX;
+	double highRank = INT_MAX;
 	int Rank = INT_MAX;
 	for (auto i = 0; i < pCount; i++) {
 		pair<string, double> pr;
@@ -155,14 +159,13 @@ scoreTable2 highestRank(vector<scoreTable2> &buffer, int pCount, int matcher) {
 		for (auto j = 0; j < matcher; j++) {
 			mp = next(buffer[j].begin(), i);
 			pr = mp->first;
-			if (pr.second < score) score = pr.second;
-			if (mp->second < Rank) Rank = mp->second;
+			if (mp->second < highRank) highRank = mp->second;
 		}
 
 		//Return type is a Pair<iterator,boolean(true if inserted)>.
-		auto fusedIterator = fused.insert(make_pair(make_pair(pr.first, score), make_pair(Rank, -1)));
-		fuseSort.insert(make_pair(Rank, fusedIterator.first));
-		score = INT_MAX;
+		auto fusedIterator = fused.insert(make_pair(make_pair(pr.first, highRank), -1));
+		fuseSort.insert(make_pair(highRank, fusedIterator.first));
+		highRank = INT_MAX;
 		Rank = INT_MAX;
 	}
 
@@ -171,9 +174,9 @@ scoreTable2 highestRank(vector<scoreTable2> &buffer, int pCount, int matcher) {
 		auto select = it->second;
 		if (select != fused.end()) {
 			auto pr1 = select->first;
-			int Rank = select->second.first;
+			int highRank = it->first;
 			fused.erase(select);
-			fused.insert(make_pair(pr1, make_pair(Rank, ct++)));
+			fused.insert(make_pair(make_pair(pr1.first, highRank), ct++));
 		}
 
 	}
@@ -242,7 +245,8 @@ int main(void) {
 	cout << "Press accordingly for the following "<<endl;
 	cout << "Press 1 : To sort images according to names." << endl;
 	cout << "Press 2 : To generate a random Fusion Table." << endl;
-	cout << "Press 3 : To Get original fusion ranks into a CSV file." << endl;
+	cout << "Press 3 : To Get original fusion ranks into a CSV file by Borda CountMethod." << endl;
+	cout << "Press 4 : To Get original fusion ranks into a CSV file by Highest Rank Method." << endl;
 	cin >> x;
 
 	//Code for Above functionalities.
@@ -264,7 +268,9 @@ int main(void) {
 	case 3:
 		goto setRank;
 		break;
-
+	case 4:
+		goto setRank;
+		break;
 	default:
 		exit(0);
 	}
@@ -273,11 +279,17 @@ int main(void) {
 	//Here We make all the codes
 	vector<vector<string>> parse;
 
+	//To store time;
+	map<string, double> timeTable;
 
 
 	getScoreList(csvList);
 	//Iterating through each CSV FIle
 	for (auto i = csvList.begin(); i != csvList.end(); i++) {
+
+		//Calculation of execution time
+		//To calculate time
+		clock_t tStart = clock();
 
 		cout << "Please Wait" << endl;
 		string fileName = *i;
@@ -292,21 +304,36 @@ int main(void) {
 		parse=readCSV(source + fileName);
 		auto scoreBuffer=setTable(parse);
 		//printBuffer(scoreBuffer);
-		scoreTable2 fused=getBordaCountRank(scoreBuffer, 1679, 3);
 
 		
-		write(directory,*(scoreBuffer.begin()),"Sift Ranks");
-		write(directory, *(scoreBuffer.begin()+1), "Corelation Ranks");
-		write(directory, *(scoreBuffer.begin()+2), "EMD Ranks");
+		write(directory,*(scoreBuffer.begin()),"Scores","Sift Ranks");
+		write(directory, *(scoreBuffer.begin()+1), "Scores", "Corelation Ranks");
+		write(directory, *(scoreBuffer.begin()+2), "Scores", "EMD Ranks");
 
-		//Writing the fused
-		write(directory,fused, "Fused Ranks");
-		cout << "Fused Rank generation for " << fileName << " done" << endl;
+
+		scoreTable2 fused;
+		if (x == 3) {
+			//Writing the Borda Count fused Ranks
+			fused = getBordaCountRank(scoreBuffer, 1679, 3);
+			write(directory, fused, "Borda Fused Rank", "Fused Ranks");
+			cout << "Fused Rank generation for " << fileName << " done" << endl;
+		}
+		else {
+			fused = getHighestRank(scoreBuffer, 1679, 3);
+			write(directory, fused, "Highest Rank", "Fused Ranks");
+			cout << "Fused Rank generation for " << fileName << " done" << endl;
+		}
+		
+		//Time Taken
+		double timeTaken=(double)(clock() - tStart) / CLOCKS_PER_SEC;
+		timeTable.insert(make_pair(fileName, timeTaken));
+
+		//Calling write every time just to ensure time is generated even if the process is haulted
+		writeTine(timeTable, "../../../CPUTimes", "visualStudioTime");
 
 	}
-	
-
-
+	//To end Ranking
+	return 0;
 
 	return 0;
 }
