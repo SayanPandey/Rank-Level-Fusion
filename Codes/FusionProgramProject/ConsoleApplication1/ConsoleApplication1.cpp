@@ -282,7 +282,7 @@ int main(void) {
 	//To store time;
 	map<string, double> timeTable;
 
-
+	int personCount=1;
 	getScoreList(csvList);
 	//Iterating through each CSV FIle
 	for (auto i = csvList.begin(); i != csvList.end(); i++) {
@@ -314,12 +314,12 @@ int main(void) {
 		scoreTable2 fused;
 		if (x == 3) {
 			//Writing the Borda Count fused Ranks
-			fused = getBordaCountRank(scoreBuffer, 1679, 3);
+			fused = getBordaCountRank(scoreBuffer, (*scoreBuffer.begin()).size(), scoreBuffer.size());
 			write(directory, fused, "Borda Fused Rank", "Fused Ranks");
 			cout << "Fused Rank generation for " << fileName << " done" << endl;
 		}
 		else {
-			fused = getHighestRank(scoreBuffer, 1679, 3);
+			fused = getHighestRank(scoreBuffer, (*scoreBuffer.begin()).size(), scoreBuffer.size());
 			write(directory, fused, "Highest Rank", "Fused Ranks");
 			cout << "Fused Rank generation for " << fileName << " done" << endl;
 		}
@@ -330,6 +330,7 @@ int main(void) {
 
 		//Calling write every time just to ensure time is generated even if the process is haulted
 		writeTine(timeTable, "../../../CPUTimes", "visualStudioTime");
+		cout << personCount++ << " out of " << (*scoreBuffer.begin()).size() << " done" << endl;
 
 	}
 	//To end Ranking
