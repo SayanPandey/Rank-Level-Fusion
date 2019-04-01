@@ -247,15 +247,15 @@ vector<scoreTable2> setTable(vector < vector<string>> &parse) {
 
 int main(void) {
 	
-	int x=6;
+	int x;
 	cout << "Press accordingly for the following "<<endl;
 	cout << "Press 1 : To sort images according to names." << endl;
 	cout << "Press 2 : To generate a random Fusion Table." << endl;
 	cout << "Press 3 : To Get original fusion ranks into a CSV file by Borda CountMethod." << endl;
 	cout << "Press 4 : To Get original fusion ranks into a CSV file by Highest Rank Method." << endl;
 	cout << "Press 5 : To Get CPU exection time data and output it to a CSV file." << endl;
-	cout << "Press 6 : To Get Ideentification ranks from the fused tables to a CSV file." << endl;
-	//cin >> x;
+	cout << "Press 6 : To Get Ranks Frequency from individual mathers to a CSV file." << endl;
+	cin >> x;
 
 	//Code for Above functionalities.
 	vector<string> csvList;
@@ -326,6 +326,7 @@ int main(void) {
 		//Get Identification
 		if (x == 6) {
 			getIndentificationRanks(scoreBuffer);
+			cout << personCount++ << " out of " << (*scoreBuffer.begin()).size() << " done" << endl;
 			continue;
 		}
 
@@ -358,7 +359,10 @@ int main(void) {
 
 	}
 	//To end Ranking
-	return 0;
+	if (x == 6) {
+		auto store = writeIden(iden);
+		writeStore(store);
+	}
 
 	return 0;
 }
