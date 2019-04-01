@@ -61,6 +61,11 @@ vector<vector<string>> readCSV(string path) {
 
 	ifstream file;
 	file.open(changeToChar(path));
+	//Checking file 
+	if (!file.is_open()) {
+		cout << "Falied to open file to get CPU Times." << endl;
+		exit(-1);
+	}
 	string temp;
 	vector<vector<string>> parse;
 
@@ -247,6 +252,8 @@ int main(void) {
 	cout << "Press 2 : To generate a random Fusion Table." << endl;
 	cout << "Press 3 : To Get original fusion ranks into a CSV file by Borda CountMethod." << endl;
 	cout << "Press 4 : To Get original fusion ranks into a CSV file by Highest Rank Method." << endl;
+	cout << "Press 5 : To Get CPU exection time data and output it to a CSV file." << endl;
+	cout << "Press 6 : To Get Ideentification ranks from the fused tables to a CSV file." << endl;
 	cin >> x;
 
 	//Code for Above functionalities.
@@ -259,18 +266,24 @@ int main(void) {
 	switch (x) {
 	case 1:
 		sortImages();
-		break;
+		return 0;
 
 	case 2:
 		fusionAlgoRandom();
-		break;
+		return 0;
 
 	case 3:
 		goto setRank;
 		break;
+
 	case 4:
 		goto setRank;
 		break;
+
+	case 5:
+		writeAverageTime();
+		return 0;
+
 	default:
 		exit(0);
 	}
@@ -318,7 +331,7 @@ int main(void) {
 			write(directory, fused, "Borda Fused Rank", "Fused Ranks");
 			cout << "Fused Rank generation for " << fileName << " done" << endl;
 		}
-		else {
+		else if(x==4) {
 			fused = getHighestRank(scoreBuffer, (*scoreBuffer.begin()).size(), scoreBuffer.size());
 			write(directory, fused, "Highest Rank", "Fused Ranks");
 			cout << "Fused Rank generation for " << fileName << " done" << endl;
