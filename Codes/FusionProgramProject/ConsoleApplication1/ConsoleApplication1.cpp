@@ -15,6 +15,7 @@
 #include "FileSort.h"
 #include "dirent.h"
 #include "Time.h"
+#include "identification.h"
 
 //Below is a datatype to store score values.
 typedef map<pair<string, double>, int> scoreTable2;
@@ -246,7 +247,7 @@ vector<scoreTable2> setTable(vector < vector<string>> &parse) {
 
 int main(void) {
 	
-	int x;
+	int x=6;
 	cout << "Press accordingly for the following "<<endl;
 	cout << "Press 1 : To sort images according to names." << endl;
 	cout << "Press 2 : To generate a random Fusion Table." << endl;
@@ -254,7 +255,7 @@ int main(void) {
 	cout << "Press 4 : To Get original fusion ranks into a CSV file by Highest Rank Method." << endl;
 	cout << "Press 5 : To Get CPU exection time data and output it to a CSV file." << endl;
 	cout << "Press 6 : To Get Ideentification ranks from the fused tables to a CSV file." << endl;
-	cin >> x;
+	//cin >> x;
 
 	//Code for Above functionalities.
 	vector<string> csvList;
@@ -283,6 +284,10 @@ int main(void) {
 	case 5:
 		writeAverageTime();
 		return 0;
+
+	case 6:
+		goto setRank;
+		break;
 
 	default:
 		exit(0);
@@ -317,6 +322,12 @@ int main(void) {
 		parse=readCSV(source + fileName);
 		auto scoreBuffer=setTable(parse);
 		//printBuffer(scoreBuffer);
+
+		//Get Identification
+		if (x == 6) {
+			getIndentificationRanks(scoreBuffer);
+			continue;
+		}
 
 		
 		write(directory,*(scoreBuffer.begin()),"Scores","Sift Ranks");
