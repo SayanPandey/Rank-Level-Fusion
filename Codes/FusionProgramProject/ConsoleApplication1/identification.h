@@ -257,7 +257,6 @@ void readFusedRankList(vector<string> &csvList,string title="Highest Rank") {
 		auto parse = readCSV2("../../../Output_Fused_Rank/" + *i + "/" + title+".csv");
 		storeHighRank.push_back(parse);
 		ct++;
-		if (ct == 300) break;
 	}
 
 	//To get max Score Frequen score table;
