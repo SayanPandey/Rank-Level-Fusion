@@ -76,7 +76,7 @@ void writeIdentity(map<string, pair<int, int>> &store) {
 	string destination = "../../../Identity";
 	ofstream file;
 	file.open(changeToChar3(destination + "/percentageRank.csv"));
-	file << "Name,Min Rank,Frequency in fused tables,Percentage" << endl;
+	file << "Name,Max Rank,Frequency in fused tables,Percentage" << endl;
 
 	for (auto i = store.begin(); i != store.end(); i++) {
 
