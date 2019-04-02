@@ -254,7 +254,9 @@ int main(void) {
 	cout << "Press 3 : To Get original fusion ranks into a CSV file by Borda CountMethod." << endl;
 	cout << "Press 4 : To Get original fusion ranks into a CSV file by Highest Rank Method." << endl;
 	cout << "Press 5 : To Get CPU exection time data and output it to a CSV file." << endl;
-	cout << "Press 6 : To Get Ranks Frequency from individual mathers to a CSV file." << endl;
+	cout << "Press 6 : To Get Ranks Frequency from individual matchers to a CSV file." << endl;
+	cout << "Press 7 : To Get Identification results to a CSV file." << endl;
+
 	cin >> x;
 
 	//Code for Above functionalities.
@@ -289,6 +291,10 @@ int main(void) {
 		goto setRank;
 		break;
 
+	case 7:
+		goto setRank;
+		break;
+
 	default:
 		exit(0);
 	}
@@ -302,6 +308,8 @@ int main(void) {
 
 	int personCount=1;
 	getScoreList(csvList);
+
+	if (x == 7)goto IDENTIFY;
 	//Iterating through each CSV FIle
 	for (auto i = csvList.begin(); i != csvList.end(); i++) {
 
@@ -358,10 +366,18 @@ int main(void) {
 		cout << personCount++ << " out of " << (*scoreBuffer.begin()).size() << " done" << endl;
 
 	}
+
+	
 	//To end Ranking
 	if (x == 6) {
 		auto store = writeIden(iden);
 		writeStore(store);
+		
+	}
+
+	IDENTIFY:
+	if (x == 7) {
+		readFusedRankList(csvList, "Highest Rank");
 	}
 
 	return 0;
